@@ -759,19 +759,22 @@ export function CaseDetailPage({ caseData, onBack }: CaseDetailPageProps) {
                   <CustomNextArrow />
                 }
               >
-                {[
-                  { src: caseData.images[8], alt: "Грамота" },
-                  { src: caseData.images[9], alt: "Свиток" },
-                  { src: caseData.images[12], alt: "Карточка ALCABBALA" },
-                  { src: caseData.images[13], alt: "Папка с карточками" },
-                  { src: caseData.images[14], alt: "Обложка" },
-                  { src: caseData.images[15], alt: "Карточка обложка" }
-                ].map((image, index) => (
+                {
+                  [
+                    { src: caseData.images[8], alt: "Грамота" },
+                    { src: caseData.images[9], alt: "Свиток" },
+                    { src: caseData.images[12], alt: "Карточка ALCABBALA" },
+                    { src: caseData.images[13], alt: "Папка с карточками" },
+                    { src: caseData.images[14], alt: "Обложка" },
+                    { src: caseData.images[15], alt: "Карточка обложка" }
+                  ]
+                    .filter((image) => Boolean(image.src))
+                    .map((image, index) => (
                   <div key={index} className="outline-none">
                     <div className="rounded-xl lg:rounded-2xl overflow-hidden h-[500px] lg:h-[700px] border border-white/10">
-                      <img 
-                        src={image.src} 
-                        alt={image.alt} 
+                      <img
+                        src={image.src}
+                        alt={image.alt}
                         className="w-full h-full object-cover"
                       />
                     </div>
