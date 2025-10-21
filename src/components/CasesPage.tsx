@@ -1,4 +1,4 @@
-import { useLayoutEffect } from 'react';
+import { useLayoutEffect, type MouseEvent as ReactMouseEvent } from 'react';
 import svgPaths from "../imports/svg-6thd6kauch";
 import { CASE_STUDIES, type CaseMeta } from "../utils/cases";
 
@@ -56,35 +56,36 @@ function Footer() {
   );
 }
 
-function CaseCard({ caseStudy, onClick }: { caseStudy: CaseMeta; onClick?: () => void }) {
-  const handleClick = (e: React.MouseEvent) => {
-    e.preventDefault();
+function CaseCard({ caseStudy, onClick }: { caseStudy: CaseMeta; onClick?: (event: ReactMouseEvent<HTMLAnchorElement>) => void }) {
+  const handleClick = (event: ReactMouseEvent<HTMLAnchorElement>) => {
     console.log('CaseCard clicked on CasesPage:', caseStudy.title);
-    
-    // Если есть внешняя ссылка, открываем её
+
     if (caseStudy.externalLink) {
-      window.open(caseStudy.externalLink, '_blank');
       return;
     }
-    
-    // Иначе вызываем переданный onClick
+
     if (onClick) {
-      onClick();
+      event.preventDefault();
+      onClick(event);
     }
   };
 
   const { CoverComponent } = caseStudy;
-  
+  const href = caseStudy.externalLink ?? `/cases/${caseStudy.slug}`;
+  const target = caseStudy.externalLink ? '_blank' : undefined;
+  const rel = caseStudy.externalLink ? 'noopener noreferrer' : undefined;
+
   return (
-    <div 
-      className="group relative cursor-pointer transition-transform duration-500 hover:-translate-y-2 select-none"
+    <a
+      href={href}
+      target={target}
+      rel={rel}
+      className="group relative cursor-pointer transition-transform duration-500 hover:-translate-y-2 select-none no-underline"
       onClick={handleClick}
-      role="button"
-      tabIndex={0}
     >
       <div className="h-[400px] lg:h-[500px] relative rounded-2xl lg:rounded-3xl shrink-0 w-full overflow-hidden bg-gray-100">
-        <CoverComponent 
-          alt={caseStudy.title} 
+        <CoverComponent
+          alt={caseStudy.title}
           className="absolute inset-0 max-w-none object-center object-cover pointer-events-none rounded-2xl lg:rounded-3xl size-full group-hover:scale-105 transition-transform duration-500"
         />
         <div className="absolute inset-0 bg-black/0 group-hover:bg-black/5 transition-colors duration-300" />
@@ -97,7 +98,7 @@ function CaseCard({ caseStudy, onClick }: { caseStudy: CaseMeta; onClick?: () =>
           {caseStudy.description}
         </p>
       </div>
-    </div>
+    </a>
   );
 }
 
@@ -145,7 +146,7 @@ export function CasesPage({ onCaseClick }: { onCaseClick?: (caseId: string) => v
               <CaseCard
                 key={caseStudy.slug}
                 caseStudy={caseStudy}
-                onClick={() => {
+                onClick={(_event) => {
                   console.log('Clicked case:', caseStudy.title, 'ID:', caseStudy.id);
                   if (onCaseClick) {
                     onCaseClick(caseStudy.id);

@@ -1,5 +1,5 @@
 import svgPaths from "./imports/svg-6thd6kauch";
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, type MouseEvent as ReactMouseEvent, type ComponentType } from "react";
 import { ArrowRight } from "lucide-react";
 import { CasesPage } from "./components/CasesPage";
 import { Navigation } from "./components/Navigation";
@@ -192,36 +192,46 @@ interface FeaturedCaseCardProps {
   title: string;
   tags: string;
   description: string;
-  CoverComponent: React.ComponentType<{ className?: string; alt?: string }>;
+  CoverComponent: ComponentType<{ className?: string; alt?: string }>;
   large?: boolean;
   externalLink?: string;
-  onClick?: (e: React.MouseEvent) => void;
+  href?: string;
+  onClick?: (e: ReactMouseEvent<HTMLAnchorElement>) => void;
 }
 
-function CaseCard({ title, tags, description, CoverComponent, large = false, externalLink, onClick }: FeaturedCaseCardProps) {
-  const handleClick = (e: React.MouseEvent) => {
+function CaseCard({ title, tags, description, CoverComponent, large = false, externalLink, href, onClick }: FeaturedCaseCardProps) {
+  const handleClick = (e: ReactMouseEvent<HTMLAnchorElement>) => {
     console.log('CaseCard clicked:', title);
-    
+
     // Если есть внешняя ссылка, открываем её
     if (externalLink) {
-      window.open(externalLink, '_blank');
+      e.preventDefault();
+      window.open(externalLink, '_blank', 'noopener,noreferrer');
       return;
     }
-    
+
     // Иначе вызываем переданный onClick
     if (onClick) {
+      e.preventDefault();
       onClick(e);
     }
   };
 
+  const linkHref = externalLink ?? href ?? '#';
+  const linkTarget = externalLink ? '_blank' : undefined;
+  const linkRel = externalLink ? 'noopener noreferrer' : undefined;
+
   return (
-    <div 
-      className={`${large ? 'col-span-1 lg:col-span-2' : ''} content-stretch flex flex-col gap-4 items-start relative shrink-0 group cursor-pointer transition-transform duration-300 hover:-translate-y-1`}
+    <a
+      href={linkHref}
+      target={linkTarget}
+      rel={linkRel}
       onClick={handleClick}
+      className={`${large ? 'col-span-1 lg:col-span-2' : ''} content-stretch flex flex-col gap-4 items-start relative shrink-0 group cursor-pointer transition-transform duration-300 hover:-translate-y-1 no-underline`}
     >
       <div className={`${large ? 'h-[400px] lg:h-[860px]' : 'h-[400px] lg:h-[500px]'} relative rounded-2xl lg:rounded-3xl shrink-0 w-full overflow-hidden`}>
-        <CoverComponent 
-          alt={title} 
+        <CoverComponent
+          alt={title}
           className="absolute inset-0 max-w-none object-center object-cover pointer-events-none rounded-2xl lg:rounded-3xl size-full group-hover:scale-105 transition-transform duration-500"
         />
         <div className="absolute inset-0 bg-black/0 group-hover:bg-black/5 transition-colors duration-300" />
@@ -234,7 +244,7 @@ function CaseCard({ title, tags, description, CoverComponent, large = false, ext
           {description}
         </p>
       </div>
-    </div>
+    </a>
   );
 }
 
@@ -245,7 +255,7 @@ function Cases({ onViewAllClick, onCaseClick }: { onViewAllClick?: () => void; o
     title: string;
     tags: string;
     description: string;
-    CoverComponent: React.ComponentType<{ className?: string; alt?: string }>;
+    CoverComponent: ComponentType<{ className?: string; alt?: string }>;
     large: boolean;
     externalLink?: string;
   };
@@ -294,12 +304,17 @@ function Cases({ onViewAllClick, onCaseClick }: { onViewAllClick?: () => void; o
           <CaseCard
             key={caseItem.slug}
             {...caseItem}
+            href={!caseItem.externalLink ? `/cases/${caseItem.slug}` : caseItem.externalLink}
             onClick={(e) => {
               console.log('Clicked case:', caseItem.title, 'ID:', caseItem.id);
+              if (caseItem.externalLink) {
+                return;
+              }
+
               if (onCaseClick) {
                 onCaseClick(caseItem.id);
               }
-            }} 
+            }}
           />
         ))}
       </div>
@@ -320,11 +335,24 @@ function Cases({ onViewAllClick, onCaseClick }: { onViewAllClick?: () => void; o
 }
 
 function SpecialCases({ onCaseClick }: { onCaseClick?: (caseId: string) => void }) {
+  const cherekhinMeta = getCaseMetaById('6');
+  const goldmileMeta = getCaseMetaById('3');
+  const tectumMeta = getCaseMetaById('8');
+
+  const handleInternalClick = (event: ReactMouseEvent<HTMLAnchorElement>, caseId: string) => {
+    if (!onCaseClick) {
+      return;
+    }
+
+    event.preventDefault();
+    onCaseClick(caseId);
+  };
+
   return (
     <div className="bg-white relative shrink-0 w-full">
       <div className="size-full">
         <div className="box-border content-stretch flex flex-col gap-16 lg:gap-20 items-start pb-24 lg:pb-32 pt-0 px-8 lg:px-16 relative w-full">
-          
+
           {/* Заголовок секции */}
           <div className="content-stretch flex flex-col gap-6 items-start relative shrink-0 max-w-4xl">
             <div className="content-stretch flex flex-col gap-2 items-start relative shrink-0 w-full">
@@ -341,36 +369,36 @@ function SpecialCases({ onCaseClick }: { onCaseClick?: (caseId: string) => void 
           </div>
 
           {/* Баннеры Tectum */}
-          <div 
-            className="w-full aspect-[1392/832] relative rounded-2xl lg:rounded-3xl overflow-hidden group cursor-pointer bg-gray-100"
-            onClick={() => {
-              console.log('Tectum баннеры clicked');
-              window.open('https://tectum.io/tectum-blog/', '_blank');
-            }}
+          <a
+            href={tectumMeta?.externalLink ?? 'https://tectum.io/tectum-blog/'}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="w-full aspect-[1392/832] relative rounded-2xl lg:rounded-3xl overflow-hidden group cursor-pointer bg-gray-100 no-underline"
           >
-            <TectumCover 
-              alt="Более 500 баннеров для Tectum SoftNote" 
+            <TectumCover
+              alt="Более 500 баннеров для Tectum SoftNote"
               className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
             />
             <div className="absolute inset-0 bg-gradient-to-b from-black/10 to-transparent pointer-events-none" />
-          </div>
+          </a>
 
           {/* Национальные проекты и 12 баров */}
           <div className="content-stretch flex flex-col lg:flex-row gap-8 lg:gap-12 items-start relative shrink-0 w-full">
-            
+
             {/* Черёхин - Национальные проекты */}
-            <div 
-              className="content-stretch flex flex-col gap-4 items-start relative shrink-0 flex-1 group cursor-pointer"
-              onClick={() => {
+            <a
+              href={cherekhinMeta ? `/cases/${cherekhinMeta.slug}` : '#'}
+              onClick={(event) => {
                 console.log('Черёхин парк clicked - ID: 6');
-                if (onCaseClick) {
-                  onCaseClick('6');
+                if (cherekhinMeta) {
+                  handleInternalClick(event, '6');
                 }
               }}
+              className="content-stretch flex flex-col gap-4 items-start relative shrink-0 flex-1 group cursor-pointer no-underline"
             >
               <div className="h-[400px] lg:h-[692px] relative rounded-2xl lg:rounded-3xl shrink-0 w-full overflow-hidden bg-gray-100">
-                <CherekhinCover 
-                  alt="Черёхин парк - Национальные проекты России" 
+                <CherekhinCover
+                  alt="Черёхин парк - Национальные проекты России"
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                 />
                 {/* Логотип Национальные проекты России */}
@@ -385,21 +413,22 @@ function SpecialCases({ onCaseClick }: { onCaseClick?: (caseId: string) => void 
                   <span className="font-['IBM_Plex_Serif',serif] italic">Национальные<br />проекты России</span>
                 </h3>
               </div>
-            </div>
+            </a>
 
             {/* Золотая миля - 12 Баров */}
-            <div 
-              className="content-stretch flex flex-col gap-4 items-start justify-center relative shrink-0 flex-1 group cursor-pointer"
-              onClick={() => {
+            <a
+              href={goldmileMeta ? `/cases/${goldmileMeta.slug}` : '#'}
+              onClick={(event) => {
                 console.log('12 баров (Золотая миля) clicked - ID: 3');
-                if (onCaseClick) {
-                  onCaseClick('3');
+                if (goldmileMeta) {
+                  handleInternalClick(event, '3');
                 }
               }}
+              className="content-stretch flex flex-col gap-4 items-start justify-center relative shrink-0 flex-1 group cursor-pointer no-underline"
             >
               <div className="h-[300px] lg:h-[442px] aspect-square relative rounded-full shrink-0 mx-auto overflow-hidden bg-gray-100">
-                <GoldmileCover 
-                  alt="12 Баров - Золотая миля" 
+                <GoldmileCover
+                  alt="12 Баров - Золотая миля"
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                 />
               </div>
@@ -412,7 +441,7 @@ function SpecialCases({ onCaseClick }: { onCaseClick?: (caseId: string) => void 
                   Мы обошли и опросили чтобы создать дизайн игры «Золотая миля».
                 </p>
               </div>
-            </div>
+            </a>
           </div>
 
         </div>
