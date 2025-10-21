@@ -43,10 +43,11 @@ function NavButton({ onClick }: { onClick?: () => void }) {
 
 interface NavigationProps {
   onCasesClick?: () => void;
+  onNavigateToCases?: () => void;
   isDark?: boolean;
 }
 
-export function Navigation({ onCasesClick, isDark = true }: NavigationProps) {
+export function Navigation({ onCasesClick, onNavigateToCases, isDark = true }: NavigationProps) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const scrollToSection = (id: string) => {
@@ -70,9 +71,19 @@ export function Navigation({ onCasesClick, isDark = true }: NavigationProps) {
     setIsMenuOpen(false);
   };
 
+  const handleCasesMenuClick = () => {
+    if (onNavigateToCases) {
+      onNavigateToCases();
+      setIsMenuOpen(false);
+      return;
+    }
+
+    scrollToSection('cases');
+  };
+
   const menuItems = [
     { label: 'Услуги', onClick: () => scrollToSection('services') },
-    { label: 'Кейсы', onClick: () => scrollToSection('cases') },
+    { label: 'Кейсы', onClick: handleCasesMenuClick },
     { label: 'Контакты', onClick: () => {
       const footer = document.querySelector('footer') || document.getElementById('footer');
       if (footer) {

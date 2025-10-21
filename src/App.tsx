@@ -1,11 +1,11 @@
 import svgPaths from "./imports/svg-6thd6kauch";
-import { useState, useEffect, useLayoutEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { ArrowRight } from "lucide-react";
 import { CasesPage } from "./components/CasesPage";
 import { Navigation } from "./components/Navigation";
 import NationalProjectsLogo from './imports/NationalProjectsLogo';
 // КОМПОНЕНТЫ-ОБЛОЖКИ для кейсов (figma:asset работает только в компонентах!)
-import { 
+import {
   VtorichkinCover,
   GetlogistCover,
   NexteventCover,
@@ -14,6 +14,8 @@ import {
   TectumCover,
   GoldmileCover
 } from './components/covers';
+import { CaseDetailPage, getCaseDetailById } from "./components/CaseDetailPage";
+import { getCaseMetaById, getCaseMetaBySlug, type CaseMeta } from "./utils/cases";
 
 // Unified Typography System:
 // Display XL: text-[clamp(4rem,8vw,10rem)] - Hero titles
@@ -186,15 +188,17 @@ function Ideology() {
   );
 }
 
-function CaseCard({ title, tags, description, CoverComponent, large = false, externalLink, onClick }: { 
-  title: string; 
-  tags: string; 
-  description: string; 
+interface FeaturedCaseCardProps {
+  title: string;
+  tags: string;
+  description: string;
   CoverComponent: React.ComponentType<{ className?: string; alt?: string }>;
   large?: boolean;
   externalLink?: string;
   onClick?: (e: React.MouseEvent) => void;
-}) {
+}
+
+function CaseCard({ title, tags, description, CoverComponent, large = false, externalLink, onClick }: FeaturedCaseCardProps) {
   const handleClick = (e: React.MouseEvent) => {
     console.log('CaseCard clicked:', title);
     
@@ -235,36 +239,41 @@ function CaseCard({ title, tags, description, CoverComponent, large = false, ext
 }
 
 function Cases({ onViewAllClick, onCaseClick }: { onViewAllClick?: () => void; onCaseClick?: (caseId: string) => void }) {
-  const cases = [
-    {
-      id: "1",
-      slug: "vtorichkin",
-      title: "Вторичкин",
-      tags: "UX/UI design",
-      description: "Платформа для поиска вторичной недвижимости",
-      CoverComponent: VtorichkinCover,
-      large: true
-    },
-    {
-      id: "2",
-      slug: "getlogist",
-      title: "Getlogist",
-      tags: "UX/UI design",
-      description: "Рейтинг логистических компаний в России",
-      CoverComponent: GetlogistCover,
-      large: false
-    },
-    {
-      id: "7",
-      slug: "nextevent",
-      title: "NextEvent",
-      tags: "Веб-разработка",
-      description: "Платформа для организации мероприятий",
-      CoverComponent: NexteventCover,
-      large: false,
-      externalLink: "https://www.next-event.ru/"
-    }
-  ];
+  type FeaturedCase = {
+    id: string;
+    slug: string;
+    title: string;
+    tags: string;
+    description: string;
+    CoverComponent: React.ComponentType<{ className?: string; alt?: string }>;
+    large: boolean;
+    externalLink?: string;
+  };
+
+  const featuredCases: FeaturedCase[] = [
+    { id: "1", large: true },
+    { id: "2", large: false },
+    { id: "7", large: false }
+  ]
+    .map(({ id, large }) => {
+      const caseMeta = getCaseMetaById(id);
+
+      if (!caseMeta) {
+        return null;
+      }
+
+      return {
+        id: caseMeta.id,
+        slug: caseMeta.slug,
+        title: caseMeta.title,
+        tags: caseMeta.category,
+        description: caseMeta.description,
+        CoverComponent: caseMeta.CoverComponent,
+        large,
+        externalLink: caseMeta.externalLink
+      } satisfies FeaturedCase;
+    })
+    .filter((caseItem): caseItem is FeaturedCase => caseItem !== null);
 
   return (
     <div id="cases" className="bg-white box-border content-stretch flex flex-col gap-16 lg:gap-20 items-start px-8 lg:px-16 py-24 lg:py-32 relative shrink-0 w-full" data-name="Cases">
@@ -281,10 +290,10 @@ function Cases({ onViewAllClick, onCaseClick }: { onViewAllClick?: () => void; o
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 w-full">
-        {cases.map((caseItem) => (
-          <CaseCard 
+        {featuredCases.map((caseItem) => (
+          <CaseCard
             key={caseItem.slug}
-            {...caseItem} 
+            {...caseItem}
             onClick={(e) => {
               console.log('Clicked case:', caseItem.title, 'ID:', caseItem.id);
               if (onCaseClick) {
@@ -527,107 +536,182 @@ function Footer() {
 
 
 
-export default function App() {
-  const [currentPage, setCurrentPage] = useState<'home' | 'cases' | 'case-detail'>('home');
-  const [selectedCaseId, setSelectedCaseId] = useState<string>('1');
-  const [caseDetailKey, setCaseDetailKey] = useState<number>(0);
+type NavigateFn = (path: string, options?: { replace?: boolean }) => void;
 
-  // АГРЕССИВНАЯ прокрутка - исправление проблемы с "Золотой милей"
-  useLayoutEffect(() => {
-    const scrollToTop = () => {
-      window.scrollTo(0, 0);
-      window.scrollTo({ top: 0, left: 0, behavior: 'instant' } as any);
-      document.documentElement.scrollTop = 0;
-      document.body.scrollTop = 0;
-    };
-    
-    scrollToTop();
-  }, [currentPage, selectedCaseId]);
+interface RouteBase {
+  path: string;
+  redirectFrom?: string;
+}
 
-  // Дополнительная агрессивная прокрутка ПОСЛЕ отрисовки
-  useEffect(() => {
-    const scrollToTop = () => {
-      window.scrollTo(0, 0);
-      window.scrollTo({ top: 0, left: 0, behavior: 'instant' } as any);
-      document.documentElement.scrollTop = 0;
-      document.body.scrollTop = 0;
-    };
-    
-    scrollToTop();
-    
-    // Множественные прокрутки с разными задержками
-    const timeouts = [
-      setTimeout(scrollToTop, 0),
-      setTimeout(scrollToTop, 10),
-      setTimeout(scrollToTop, 50),
-      setTimeout(scrollToTop, 100),
-      setTimeout(scrollToTop, 200),
-      setTimeout(scrollToTop, 300),
-      setTimeout(scrollToTop, 500),
-      setTimeout(scrollToTop, 1000)
-    ];
-    
-    return () => {
-      timeouts.forEach(clearTimeout);
-    };
-  }, [currentPage, selectedCaseId]);
+interface HomeRouteConfig extends RouteBase {
+  kind: 'home';
+}
 
-  const handleViewCase = (caseId: string) => {
-    console.log('Opening case detail:', caseId);
-    
-    // НЕМЕДЛЕННАЯ прокрутка ПЕРЕД изменением стейта
-    window.scrollTo(0, 0);
-    window.scrollTo({ top: 0, left: 0, behavior: 'instant' } as any);
-    document.documentElement.scrollTop = 0;
-    document.body.scrollTop = 0;
-    
-    // Обновление стейта + инкремент ключа для форсированного ремаунта
-    setSelectedCaseId(caseId);
-    setCaseDetailKey(prev => prev + 1);
-    setCurrentPage('case-detail');
-  };
+interface CasesRouteConfig extends RouteBase {
+  kind: 'cases';
+}
 
-  const handleBackFromDetail = () => {
-    setCurrentPage('cases');
-  };
+interface CaseDetailRouteConfig extends RouteBase {
+  kind: 'case-detail';
+  caseMeta: CaseMeta;
+}
 
+type ResolvedRoute = HomeRouteConfig | CasesRouteConfig | CaseDetailRouteConfig;
+
+function normalizePath(path: string) {
+  if (!path) {
+    return '/';
+  }
+
+  let normalized = path.startsWith('/') ? path : `/${path}`;
+
+  if (normalized !== '/' && normalized.endsWith('/')) {
+    normalized = normalized.replace(/\/+$/, '');
+  }
+
+  return normalized || '/';
+}
+
+function resolveRoute(pathname: string): ResolvedRoute {
+  const normalized = normalizePath(pathname);
+
+  if (normalized === '/' || normalized === '') {
+    return { kind: 'home', path: '/' };
+  }
+
+  if (normalized === '/cases') {
+    return { kind: 'cases', path: '/cases' };
+  }
+
+  if (normalized.startsWith('/cases/')) {
+    const slug = normalized.slice('/cases/'.length).replace(/\/+$/, '');
+
+    if (!slug) {
+      return { kind: 'cases', path: '/cases', redirectFrom: normalized };
+    }
+
+    const caseMeta = getCaseMetaBySlug(slug);
+
+    if (!caseMeta || caseMeta.hasDetail === false) {
+      return { kind: 'cases', path: '/cases', redirectFrom: normalized };
+    }
+
+    return {
+      kind: 'case-detail',
+      path: `/cases/${caseMeta.slug}`,
+      caseMeta
+    } satisfies CaseDetailRouteConfig;
+  }
+
+  return { kind: 'home', path: '/', redirectFrom: normalized };
+}
+
+function HomeRoute({ onNavigate }: { onNavigate: NavigateFn }) {
   const handleViewAllCases = () => {
-    console.log('handleViewAllCases called, setting page to cases');
-    setCurrentPage('cases');
+    console.log('Navigating to cases page');
+    onNavigate('/cases');
   };
 
-  if (currentPage === 'case-detail') {
-    const { CaseDetailPage, getCaseDetailById } = require('./components/CaseDetailPage');
-    const caseData = getCaseDetailById(selectedCaseId);
-    
-    return (
-      <div className="bg-black content-stretch flex flex-col items-center relative size-full overflow-x-hidden">
-        <Navigation onCasesClick={() => setCurrentPage('home')} isDark={true} />
-        <CaseDetailPage key={`case-${selectedCaseId}-${caseDetailKey}`} caseData={caseData} onBack={handleBackFromDetail} />
-      </div>
-    );
-  }
+  const handleCaseClick = (caseId: string) => {
+    const slug = getCaseMetaById(caseId)?.slug;
 
-  if (currentPage === 'cases') {
-    return (
-      <div className="bg-white content-stretch flex flex-col items-center relative size-full overflow-x-hidden">
-        <Navigation onCasesClick={() => setCurrentPage('home')} isDark={false} />
-        <CasesPage key="cases-page" onCaseClick={handleViewCase} />
-      </div>
-    );
-  }
+    if (!slug) {
+      return;
+    }
+
+    onNavigate(`/cases/${slug}`);
+  };
 
   return (
     <div className="bg-white content-stretch flex flex-col items-center relative size-full overflow-x-hidden" data-name="kombinatios site">
-      <Navigation onCasesClick={() => setCurrentPage('home')} isDark={false} />
+      <Navigation isDark={false} />
       <Head />
       <Services />
       <Ideology />
-      <Cases onViewAllClick={handleViewAllCases} onCaseClick={handleViewCase} />
-      <SpecialCases onCaseClick={handleViewCase} />
+      <Cases onViewAllClick={handleViewAllCases} onCaseClick={handleCaseClick} />
+      <SpecialCases onCaseClick={handleCaseClick} />
       <Transparency />
       <CTASection />
       <Footer />
     </div>
   );
+}
+
+function CasesRoute({ onNavigate }: { onNavigate: NavigateFn }) {
+  const handleCaseClick = (caseId: string) => {
+    const slug = getCaseMetaById(caseId)?.slug;
+
+    if (!slug) {
+      return;
+    }
+
+    onNavigate(`/cases/${slug}`);
+  };
+
+  return (
+    <div className="bg-white content-stretch flex flex-col items-center relative size-full overflow-x-hidden">
+      <Navigation onCasesClick={() => onNavigate('/')} onNavigateToCases={() => onNavigate('/cases')} isDark={false} />
+      <CasesPage onCaseClick={handleCaseClick} />
+    </div>
+  );
+}
+
+function CaseDetailRoute({ caseMeta, onNavigate }: { caseMeta: CaseMeta; onNavigate: NavigateFn }) {
+  const caseData = getCaseDetailById(caseMeta.id);
+
+  return (
+    <div className="bg-black content-stretch flex flex-col items-center relative size-full overflow-x-hidden">
+      <Navigation onCasesClick={() => onNavigate('/')} onNavigateToCases={() => onNavigate('/cases')} isDark={true} />
+      <CaseDetailPage caseData={caseData} onBack={() => onNavigate('/cases')} />
+    </div>
+  );
+}
+
+export default function App() {
+  const [pathname, setPathname] = useState(() =>
+    typeof window !== 'undefined' ? normalizePath(window.location.pathname) : '/'
+  );
+
+  useEffect(() => {
+    const handlePopState = () => {
+      setPathname(normalizePath(window.location.pathname));
+    };
+
+    window.addEventListener('popstate', handlePopState);
+
+    return () => {
+      window.removeEventListener('popstate', handlePopState);
+    };
+  }, []);
+
+  const resolvedRoute = resolveRoute(pathname);
+
+  useEffect(() => {
+    if (resolvedRoute.redirectFrom && resolvedRoute.redirectFrom !== resolvedRoute.path) {
+      window.history.replaceState(null, '', resolvedRoute.path);
+      setPathname(resolvedRoute.path);
+    }
+  }, [resolvedRoute]);
+
+  const navigate = useCallback<NavigateFn>((targetPath, options) => {
+    const normalized = normalizePath(targetPath);
+
+    if (options?.replace) {
+      window.history.replaceState(null, '', normalized);
+    } else {
+      window.history.pushState(null, '', normalized);
+    }
+
+    setPathname(normalized);
+  }, []);
+
+  if (resolvedRoute.kind === 'home') {
+    return <HomeRoute onNavigate={navigate} />;
+  }
+
+  if (resolvedRoute.kind === 'cases') {
+    return <CasesRoute onNavigate={navigate} />;
+  }
+
+  return <CaseDetailRoute caseMeta={resolvedRoute.caseMeta} onNavigate={navigate} />;
 }
