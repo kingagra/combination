@@ -1,17 +1,6 @@
-import { useLayoutEffect } from 'react';
+import { useLayoutEffect, type MouseEvent as ReactMouseEvent } from 'react';
 import svgPaths from "../imports/svg-6thd6kauch";
-// КОМПОНЕНТЫ-ОБЛОЖКИ для кейсов (figma:asset работает только в компонентах!)
-import { 
-  VtorichkinCover,
-  GetlogistCover,
-  GoldmileCover,
-  OkogoraCover,
-  CherekhinCover,
-  NexteventCover,
-  TectumCover,
-  Kombo499Cover,
-  PromartCover
-} from './covers';
+import { CASE_STUDIES, type CaseMeta } from "../utils/cases";
 
 function Group67() {
   return (
@@ -67,133 +56,36 @@ function Footer() {
   );
 }
 
-interface CaseStudy {
-  id: string;
-  slug: string;
-  title: string;
-  category: string;
-  description: string;
-  CoverComponent: React.ComponentType<{ className?: string; alt?: string }>;
-  year: string;
-  externalLink?: string;
-}
-
-const caseStudies: CaseStudy[] = [
-  {
-    id: '1',
-    slug: 'vtorichkin',
-    title: 'Вторичкин',
-    category: 'UX/UI design',
-    description: 'Платформа для поиска вторичной недвижимости в Москве',
-    CoverComponent: VtorichkinCover,
-    year: '2025'
-  },
-  {
-    id: '2',
-    slug: 'getlogist',
-    title: 'Getlogist',
-    category: 'UX/UI design',
-    description: 'Рейтинг логистических компаний в России',
-    CoverComponent: GetlogistCover,
-    year: '2025'
-  },
-  {
-    id: '3',
-    slug: 'goldmile',
-    title: 'Золотая миля',
-    category: 'Брендинг / Игровая механика',
-    description: 'Специальный проект для трубного завода Икапласт',
-    CoverComponent: GoldmileCover,
-    year: '2025'
-  },
-  {
-    id: '4',
-    slug: 'kombo499',
-    title: 'Комбо за 499',
-    category: 'Брендинг / Продвижение',
-    description: 'Айдентика и digital-кампания для музыкального мероприятия',
-    CoverComponent: Kombo499Cover,
-    year: '2024'
-  },
-  {
-    id: '5',
-    slug: 'okogora',
-    title: 'Око Гора',
-    category: 'Экспресс-дизайн',
-    description: 'Визуальная айдентика для школы самообороны',
-    CoverComponent: OkogoraCover,
-    year: '2024'
-  },
-  {
-    id: '6',
-    slug: 'cherekhin',
-    title: 'Черёхин парк',
-    category: 'Брендинг / Айдентика',
-    description: 'Айдентика загородного отеля среди соснового леса',
-    CoverComponent: CherekhinCover,
-    year: '2024'
-  },
-  {
-    id: '7',
-    slug: 'nextevent',
-    title: 'NextEvent',
-    category: 'Веб-разработка',
-    description: 'Платформа для организации мероприятий',
-    CoverComponent: NexteventCover,
-    year: '2024',
-    externalLink: 'https://www.next-event.ru/'
-  },
-  {
-    id: '8',
-    slug: 'tectum',
-    title: 'Tectum',
-    category: 'Дизайн баннеров / Маркетинг',
-    description: 'Более 500 баннеров для криптовалютной компании',
-    CoverComponent: TectumCover,
-    year: '2024',
-    externalLink: 'https://tectum.io/tectum-blog/'
-  },
-  {
-    id: '9',
-    slug: 'promart',
-    title: 'ПромАрт',
-    category: 'Веб-разработка / Дизайн',
-    description: 'Сайт для компании металлообработки и монтажа',
-    CoverComponent: PromartCover,
-    year: '2024',
-    externalLink: 'http://prom-art.pro/'
-  }
-];
-
-function CaseCard({ caseStudy, onClick }: { caseStudy: CaseStudy; onClick?: () => void }) {
-  const handleClick = (e: React.MouseEvent) => {
-    e.preventDefault();
+function CaseCard({ caseStudy, onClick }: { caseStudy: CaseMeta; onClick?: (event: ReactMouseEvent<HTMLAnchorElement>) => void }) {
+  const handleClick = (event: ReactMouseEvent<HTMLAnchorElement>) => {
     console.log('CaseCard clicked on CasesPage:', caseStudy.title);
-    
-    // Если есть внешняя ссылка, открываем её
+
     if (caseStudy.externalLink) {
-      window.open(caseStudy.externalLink, '_blank');
       return;
     }
-    
-    // Иначе вызываем переданный onClick
+
     if (onClick) {
-      onClick();
+      event.preventDefault();
+      onClick(event);
     }
   };
 
   const { CoverComponent } = caseStudy;
-  
+  const href = caseStudy.externalLink ?? `/cases/${caseStudy.slug}`;
+  const target = caseStudy.externalLink ? '_blank' : undefined;
+  const rel = caseStudy.externalLink ? 'noopener noreferrer' : undefined;
+
   return (
-    <div 
-      className="group relative cursor-pointer transition-transform duration-500 hover:-translate-y-2 select-none"
+    <a
+      href={href}
+      target={target}
+      rel={rel}
+      className="group relative cursor-pointer transition-transform duration-500 hover:-translate-y-2 select-none no-underline"
       onClick={handleClick}
-      role="button"
-      tabIndex={0}
     >
       <div className="h-[400px] lg:h-[500px] relative rounded-2xl lg:rounded-3xl shrink-0 w-full overflow-hidden bg-gray-100">
-        <CoverComponent 
-          alt={caseStudy.title} 
+        <CoverComponent
+          alt={caseStudy.title}
           className="absolute inset-0 max-w-none object-center object-cover pointer-events-none rounded-2xl lg:rounded-3xl size-full group-hover:scale-105 transition-transform duration-500"
         />
         <div className="absolute inset-0 bg-black/0 group-hover:bg-black/5 transition-colors duration-300" />
@@ -206,7 +98,7 @@ function CaseCard({ caseStudy, onClick }: { caseStudy: CaseStudy; onClick?: () =
           {caseStudy.description}
         </p>
       </div>
-    </div>
+    </a>
   );
 }
 
@@ -250,11 +142,11 @@ export function CasesPage({ onCaseClick }: { onCaseClick?: (caseId: string) => v
       <section className="bg-white relative w-full">
         <div className="box-border flex flex-col items-center px-8 lg:px-16 pb-24 lg:pb-32 relative w-full max-w-[1920px] mx-auto">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 w-full">
-            {caseStudies.map((caseStudy) => (
-              <CaseCard 
+            {CASE_STUDIES.map((caseStudy) => (
+              <CaseCard
                 key={caseStudy.slug}
-                caseStudy={caseStudy} 
-                onClick={() => {
+                caseStudy={caseStudy}
+                onClick={(_event) => {
                   console.log('Clicked case:', caseStudy.title, 'ID:', caseStudy.id);
                   if (onCaseClick) {
                     onCaseClick(caseStudy.id);
