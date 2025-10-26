@@ -1,5 +1,13 @@
-import img from "figma:asset/3a7069d0f079364ceca3c29680d9b4cbe0a93f1e.png";
+import img from "figma:asset/e14d47a04fcea21013a50e30c3303b5ab4562635.png";
 
 export function TectumCover({ className = "", alt = "Tectum" }: { className?: string; alt?: string }) {
-  return <img src={img} alt={alt} className={className} />;
+  return (
+    <div className={`relative size-full ${className}`}>
+      <img 
+        alt={alt} 
+        className="absolute inset-0 max-w-none object-center object-cover pointer-events-none size-full" 
+        src={img} 
+      />
+    </div>
+  );
 }

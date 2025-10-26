@@ -67,18 +67,18 @@ function Footer() {
   return (
     <div className="bg-black relative shrink-0 w-full">
       <div className="size-full">
-        <div className="box-border content-stretch flex flex-col gap-8 lg:gap-12 items-start pb-12 pt-12 lg:pt-16 px-8 lg:px-16 relative w-full">
+        <div className="box-border content-stretch flex flex-col gap-8 lg:gap-12 items-start pb-8 pt-8 lg:pb-12 lg:pt-16 px-8 lg:px-16 relative w-full">
           <div className="content-stretch flex flex-col lg:flex-row gap-8 lg:gap-12 items-start relative shrink-0 w-full">
-            <div className="basis-0 content-stretch flex flex-col gap-4 grow items-start min-h-px min-w-px relative shrink-0">
+            <div className="w-full lg:w-auto lg:flex-1">
               <Group67 />
             </div>
-            <div className="basis-0 content-stretch flex flex-col lg:flex-row gap-8 lg:gap-12 grow items-start min-h-px min-w-px relative shrink-0">
-              <div className="basis-0 font-['Inter',sans-serif] grow min-h-px min-w-px text-[clamp(1.125rem,1.5vw,1.5rem)] text-neutral-100 space-y-2">
+            <div className="w-full lg:w-auto lg:flex-1 flex flex-col lg:flex-row gap-6 lg:gap-12">
+              <div className="w-full lg:w-auto font-['Inter',sans-serif] text-[clamp(1rem,1.25vw,1.25rem)] text-neutral-100 space-y-2">
                 <p className="cursor-pointer hover:text-[#cccccc] transition-colors" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>Наверх</p>
                 <p className="cursor-pointer hover:text-[#cccccc] transition-colors">Заполнить бриф</p>
                 <p className="underline cursor-pointer hover:text-[#cccccc] transition-colors">Связаться с нами</p>
               </div>
-              <div className="basis-0 font-['Inter',sans-serif] grow min-h-px min-w-px text-[clamp(1.125rem,1.5vw,1.5rem)] text-neutral-100 space-y-2">
+              <div className="w-full lg:w-auto font-['Inter',sans-serif] text-[clamp(1rem,1.25vw,1.25rem)] text-neutral-100 space-y-2">
                 <p className="cursor-pointer hover:text-[#cccccc] transition-colors">Instagram</p>
                 <p className="cursor-pointer hover:text-[#cccccc] transition-colors">Вконтакте</p>
                 <p className="cursor-pointer hover:text-[#cccccc] transition-colors">Telegram</p>
@@ -86,9 +86,9 @@ function Footer() {
             </div>
           </div>
           <div className="bg-[#3d3d3d] h-[1px] shrink-0 w-full" data-name="Линия" />
-          <div className="content-stretch flex flex-col lg:flex-row font-['Inter',sans-serif] gap-6 lg:gap-12 items-start text-[clamp(0.875rem,1vw,1.125rem)] text-neutral-100 w-full">
-            <p className="basis-0 grow min-h-px min-w-px relative shrink-0">© Комбинация 2025</p>
-            <p className="basis-0 grow min-h-px min-w-px relative shrink-0 cursor-pointer hover:text-[#cccccc] transition-colors">Политика конфиденциальности</p>
+          <div className="content-stretch flex flex-col lg:flex-row font-['Inter',sans-serif] gap-4 lg:gap-12 items-start text-[clamp(0.875rem,1vw,1.125rem)] text-neutral-100 w-full">
+            <p className="w-full lg:w-auto">© Комбинация 2025</p>
+            <p className="w-full lg:w-auto cursor-pointer hover:text-[#cccccc] transition-colors">Политика конфиденциальности</p>
           </div>
         </div>
       </div>
@@ -139,6 +139,67 @@ export function CaseDetailPage({ caseData, onBack }: CaseDetailPageProps) {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
+  // Специальная разметка для кейса "Матрица Судьбы"
+  if (caseData.id === '11') {
+    return (
+      <div className="bg-black min-h-screen w-full" id="case-detail-top">
+        {/* Hero Section */}
+        <section className="bg-black relative w-full" id="hero-section">
+          <div className="box-border flex flex-col px-8 lg:px-16 pt-32 pb-16 lg:pt-40 lg:pb-24 relative w-full max-w-[1920px] mx-auto">
+            <button
+              onClick={onBack}
+              className="group flex items-center gap-3 mb-12 text-[#ededed] hover:text-[#FF5500] transition-colors"
+            >
+              <ArrowLeft className="w-5 h-5 transition-transform group-hover:-translate-x-1" />
+              <span className="font-['Inter',sans-serif] text-[clamp(1.125rem,1.5vw,1.5rem)]">Назад к кейсам</span>
+            </button>
+
+            <div className="w-full">
+              <p className="font-['IBM_Plex_Serif',serif] italic text-[#FF5500] text-[clamp(1.125rem,1.5vw,1.5rem)] mb-6">
+                {caseData.category}
+              </p>
+              <h1 className="font-['Inter',sans-serif] font-bold text-[#ededed] text-[clamp(3rem,8vw,8rem)] tracking-[-0.02em] leading-[1.1] mb-12 uppercase">
+                матрица судьбы
+              </h1>
+            </div>
+          </div>
+        </section>
+
+        {/* Content */}
+        <section className="bg-black relative w-full">
+          <div className="box-border flex flex-col pb-24 lg:pb-32 relative w-full max-w-[1920px] mx-auto gap-12 lg:gap-16">
+            
+            {/* Первое изображение - с отступами по ширине хедера */}
+            <div className="w-full px-8 lg:px-16">
+              <img 
+                key={`case-detail-${caseData.id}-img-0`}
+                src={caseData.images[0]} 
+                alt="Матрица Судьбы - обложка" 
+                className="w-full h-auto object-cover rounded-xl lg:rounded-2xl" 
+              />
+            </div>
+
+            {/* Второе изображение - 50% ширины по центру */}
+            <div className="w-full flex justify-center px-8 lg:px-16">
+              <div className="w-full lg:w-1/2">
+                <img 
+                  key={`case-detail-${caseData.id}-img-1`}
+                  src={caseData.images[1]} 
+                  alt="Матрица Судьбы - детальное изображение" 
+                  className="w-full h-auto object-cover rounded-xl lg:rounded-2xl" 
+                />
+              </div>
+            </div>
+
+          </div>
+        </section>
+
+        {/* Footer */}
+        <Footer />
+      </div>
+    );
+  }
+
   // Специальная разметка для кейса "Комбо за 499"
   if (caseData.id === '4') {
     return (
@@ -178,7 +239,7 @@ export function CaseDetailPage({ caseData, onBack }: CaseDetailPageProps) {
                 Задача
               </h2>
               <p className="font-['Inter',sans-serif] text-[#bbb] text-[clamp(1.125rem,1.5vw,1.5rem)] leading-[1.6] tracking-[-0.01em]">
-                Разработали логотип, медиаматериалы, оформление площадки и digital-носители. Продумали контент-план, таргет и PR-механику, обеспечив устойчивый рост охватов и узнаваемости бренда.
+                Разработали логотип, медиаматериалы, оформление площадки и digital-носители. Проду��али контент-план, таргет и PR-механику, обеспечив устойчивый рост охватов и узнаваемости бренда.
               </p>
             </div>
 
@@ -198,6 +259,15 @@ export function CaseDetailPage({ caseData, onBack }: CaseDetailPageProps) {
             {/* Изображения проекта */}
             <div className="rounded-xl lg:rounded-2xl overflow-hidden">
               <img 
+                key={`case-detail-${caseData.id}-img-0`}
+                src={caseData.images[0]} 
+                alt="Материалы КОМБО за 499" 
+                className="w-full h-auto object-cover" 
+              />
+            </div>
+
+            <div className="rounded-xl lg:rounded-2xl overflow-hidden">
+              <img 
                 key={`case-detail-${caseData.id}-img-1`}
                 src={caseData.images[1]} 
                 alt="Материалы КОМБО за 499" 
@@ -214,15 +284,6 @@ export function CaseDetailPage({ caseData, onBack }: CaseDetailPageProps) {
               />
             </div>
 
-            <div className="rounded-xl lg:rounded-2xl overflow-hidden">
-              <img 
-                key={`case-detail-${caseData.id}-img-3`}
-                src={caseData.images[3]} 
-                alt="Материалы КОМБО за 499" 
-                className="w-full h-auto object-cover" 
-              />
-            </div>
-
             {/* Результат */}
             <div className="w-full lg:w-2/3">
               <h2 className="font-['Inter',sans-serif] font-bold text-[#ededed] text-[clamp(1.5rem,2.5vw,2rem)] tracking-[-0.01em] leading-[1.3] mb-6">
@@ -234,15 +295,15 @@ export function CaseDetailPage({ caseData, onBack }: CaseDetailPageProps) {
             </div>
 
             <div className="rounded-xl lg:rounded-2xl overflow-hidden">
+              <img src={caseData.images[3]} alt="Материалы КОМБО за 499" className="w-full h-auto object-cover" />
+            </div>
+
+            <div className="rounded-xl lg:rounded-2xl overflow-hidden">
               <img src={caseData.images[4]} alt="Материалы КОМБО за 499" className="w-full h-auto object-cover" />
             </div>
 
             <div className="rounded-xl lg:rounded-2xl overflow-hidden">
               <img src={caseData.images[5]} alt="Материалы КОМБО за 499" className="w-full h-auto object-cover" />
-            </div>
-
-            <div className="rounded-xl lg:rounded-2xl overflow-hidden">
-              <img src={caseData.images[6]} alt="Материалы КОМБО за 499" className="w-full h-auto object-cover" />
             </div>
 
             {/* Заключение */}
@@ -293,7 +354,7 @@ export function CaseDetailPage({ caseData, onBack }: CaseDetailPageProps) {
             {/* Intro text */}
             <div className="w-full lg:w-2/3">
               <p className="font-['Inter',sans-serif] text-[#0e0e0e] text-[clamp(1.75rem,3vw,2.625rem)] leading-[1.3] tracking-[-0.01em] mb-8">
-                Айдентика загородного отеля среди соснового леса. Проект основан на ощущении простоты, искренности и возвращения к себе.
+                Айдентика загородного отеля среди соснового леса. Проект основан на ощущении просто��ы, искренности и возвращения к себе.
               </p>
               <h2 className="font-['Inter',sans-serif] font-bold text-[#0e0e0e] text-[clamp(1.5rem,2.5vw,2rem)] tracking-[-0.01em] leading-[1.3] mb-4">
                 О проекте
@@ -337,11 +398,6 @@ export function CaseDetailPage({ caseData, onBack }: CaseDetailPageProps) {
             {/* Изображения проекта */}
             {CASE_IMAGES.cherekhin && CASE_IMAGES.cherekhin.map((image, index) => (
               <div key={`cherekhin-image-${index}`} className="w-full">
-                <img 
-                  src={image} 
-                  alt={`Черёхин парк визуал ${index + 1}`}
-                  className="w-full h-auto rounded-2xl lg:rounded-3xl"
-                />
               </div>
             ))}
 
@@ -359,6 +415,98 @@ export function CaseDetailPage({ caseData, onBack }: CaseDetailPageProps) {
             <div className="w-full lg:w-2/3 py-8">
               <p className="font-['IBM_Plex_Serif',serif] italic text-[#0e0e0e] text-[clamp(1.5rem,2.5vw,2rem)] leading-[1.4] tracking-[-0.01em]">
                 Место, где можно вернуться к себе и почувствовать простоту настоящего момента.
+              </p>
+            </div>
+
+          </div>
+        </section>
+
+        {/* Footer */}
+        <Footer />
+      </div>
+    );
+  }
+
+  // Специальная разметка для кейса "Ветстатус"
+  if (caseData.id === '10') {
+    return (
+      <div className="bg-white min-h-screen w-full" id="case-detail-top">
+        {/* Hero Section */}
+        <section className="bg-white relative w-full" id="hero-section">
+          <div className="box-border flex flex-col px-8 lg:px-16 pt-32 pb-16 lg:pt-40 lg:pb-24 relative w-full max-w-[1920px] mx-auto">
+            <button
+              onClick={onBack}
+              className="group flex items-center gap-3 mb-12 text-[#0e0e0e] hover:text-black transition-colors"
+            >
+              <ArrowLeft className="w-5 h-5 transition-transform group-hover:-translate-x-1" />
+              <span className="font-['Inter',sans-serif] text-[clamp(1.125rem,1.5vw,1.5rem)]">Назад к кейсам</span>
+            </button>
+
+            <div className="w-full">
+              <p className="font-['IBM_Plex_Serif',serif] italic text-[#808080] text-[clamp(1.125rem,1.5vw,1.5rem)] mb-6">
+                {caseData.category}
+              </p>
+              <h1 className="font-['Inter',sans-serif] font-bold text-[#0e0e0e] text-[clamp(3rem,8vw,8rem)] tracking-[-0.02em] leading-[1.1] mb-12 uppercase">
+                ВЕТСТАТУС
+              </h1>
+            </div>
+          </div>
+        </section>
+
+        {/* Content */}
+        <section className="bg-white relative w-full">
+          <div className="box-border flex flex-col px-8 lg:px-16 pb-24 lg:pb-32 relative w-full max-w-[1920px] mx-auto gap-12 lg:gap-16">
+            
+            {/* Intro text */}
+            <div className="w-full lg:w-2/3">
+              <p className="font-['Inter',sans-serif] text-[#0e0e0e] text-[clamp(1.75rem,3vw,2.625rem)] leading-[1.3] tracking-[-0.01em] mb-8">
+                Ветстатус — лучшая в своём регионе ветеринарная клиника. Тут все, у кого есть лапки, могут пройти полное обследование и получить необходимую медицинскую помощь.
+              </p>
+            </div>
+
+            {/* Hero Image */}
+            <div className="rounded-2xl lg:rounded-3xl overflow-hidden">
+              <img src={caseData.images[0]} alt="Ветстатус - наружная реклама" className="w-full h-auto object-cover" />
+            </div>
+
+            {/* Big Idea */}
+            <div className="w-full lg:w-2/3">
+              <h2 className="font-['Inter',sans-serif] font-bold text-[#0e0e0e] text-[clamp(2rem,4vw,3.375rem)] tracking-[-0.01em] leading-[1.2] mb-6">
+                Статус: гав гав.
+              </h2>
+              <p className="font-['Inter',sans-serif] text-[#666] text-[clamp(1.125rem,1.5vw,1.5rem)] leading-[1.6] tracking-[-0.01em] mb-6">
+                Во время разработки бренд стратегии пришёл инсайт: питомец может стать личностью. Чем больше мы воспринимаем животных как личностей, тем больше мы осознаем, что им тоже необходима медицинская помощь.
+              </p>
+              <p className="font-['Inter',sans-serif] text-[#666] text-[clamp(1.125rem,1.5vw,1.5rem)] leading-[1.6] tracking-[-0.01em]">
+                Сейчас у клиники новенькая айдентика в которой есть базовые аватары животных. Их можно кастомизировать, примеряя различные аксессуары и образы.
+              </p>
+            </div>
+
+            {/* Gallery Images */}
+            {caseData.images.slice(1).map((image, index) => (
+              <div key={index} className="rounded-2xl lg:rounded-3xl overflow-hidden">
+                <img 
+                  src={image} 
+                  alt={`Ветстатус визуал ${index + 1}`}
+                  className="w-full h-auto rounded-2xl lg:rounded-3xl"
+                />
+              </div>
+            ))}
+
+            {/* Результат */}
+            <div className="w-full lg:w-2/3">
+              <h2 className="font-['Inter',sans-serif] font-bold text-[#0e0e0e] text-[clamp(1.5rem,2.5vw,2rem)] tracking-[-0.01em] leading-[1.3] mb-6">
+                Ре��ультат
+              </h2>
+              <p className="font-['Inter',sans-serif] text-[#666] text-[clamp(1.125rem,1.5vw,1.5rem)] leading-[1.6] tracking-[-0.01em]">
+                Создали визуальную систему, которая делает медицинскую помощь доступной и дружелюбной. Айдентика работает на всех точках контакта — от фирменного стиля до мерча и digital-присутствия.
+              </p>
+            </div>
+
+            {/* Заключение */}
+            <div className="w-full lg:w-2/3 py-8">
+              <p className="font-['IBM_Plex_Serif',serif] italic text-[#0e0e0e] text-[clamp(1.5rem,2.5vw,2rem)] leading-[1.4] tracking-[-0.01em]">
+                Когда питомец становится личностью, забота о нём становится естественной.
               </p>
             </div>
 
@@ -581,24 +729,24 @@ export function CaseDetailPage({ caseData, onBack }: CaseDetailPageProps) {
 
             {/* Дизайны карточек - 3 горизонтальные в ряд */}
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 lg:gap-6">
-              <div className="rounded-xl lg:rounded-2xl overflow-hidden border border-white/10">
-                <img src={caseData.images[0]} alt="Карточка с узором" className="w-full h-auto object-contain" />
+              <div className="rounded-xl lg:rounded-2xl overflow-hidden border border-white/10 aspect-[4/3]">
+                <img src={caseData.images[0]} alt="Карточка с узором" className="w-full h-full object-cover" />
               </div>
-              <div className="rounded-xl lg:rounded-2xl overflow-hidden border border-white/10">
-                <img src={caseData.images[1]} alt="Карточки" className="w-full h-auto object-contain" />
+              <div className="rounded-xl lg:rounded-2xl overflow-hidden border border-white/10 aspect-[4/3]">
+                <img src={caseData.images[1]} alt="Карточки" className="w-full h-full object-cover" />
               </div>
-              <div className="rounded-xl lg:rounded-2xl overflow-hidden border border-white/10">
-                <img src={caseData.images[2]} alt="Деталь" className="w-full h-auto object-contain" />
+              <div className="rounded-xl lg:rounded-2xl overflow-hidden border border-white/10 aspect-[4/3]">
+                <img src={caseData.images[2]} alt="Деталь" className="w-full h-full object-cover" />
               </div>
             </div>
 
             {/* Дизайны концепция + карта - 2 в ряд */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8">
-              <div className="rounded-xl lg:rounded-2xl overflow-hidden border border-white/10">
-                <img src={caseData.images[3]} alt="Концепция" className="w-full h-auto object-contain" />
+              <div className="rounded-xl lg:rounded-2xl overflow-hidden border border-white/10 aspect-video">
+                <img src={caseData.images[3]} alt="Концепция" className="w-full h-full object-cover" />
               </div>
-              <div className="rounded-xl lg:rounded-2xl overflow-hidden border border-white/10">
-                <img src={caseData.images[4]} alt="Карта маршрута" className="w-full h-auto object-contain" />
+              <div className="rounded-xl lg:rounded-2xl overflow-hidden border border-white/10 aspect-video">
+                <img src={caseData.images[4]} alt="Карта маршрута" className="w-full h-full object-cover" />
               </div>
             </div>
 
@@ -614,11 +762,11 @@ export function CaseDetailPage({ caseData, onBack }: CaseDetailPageProps) {
 
             {/* Дизайны карточек - сетка 2 колонки */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8">
-              <div className="rounded-xl lg:rounded-2xl overflow-hidden border border-white/10">
-                <img src={caseData.images[10]} alt="Дизайн макет" className="w-full h-auto object-contain" />
+              <div className="rounded-xl lg:rounded-2xl overflow-hidden border border-white/10 aspect-video">
+                <img src={caseData.images[10]} alt="Дизайн макет" className="w-full h-full object-cover" />
               </div>
-              <div className="rounded-xl lg:rounded-2xl overflow-hidden border border-white/10">
-                <img src={caseData.images[11]} alt="Книжка с картой" className="w-full h-auto object-contain" />
+              <div className="rounded-xl lg:rounded-2xl overflow-hidden border border-white/10 aspect-video">
+                <img src={caseData.images[11]} alt="Книжка с картой" className="w-full h-full object-cover" />
               </div>
             </div>
 
@@ -632,19 +780,19 @@ export function CaseDetailPage({ caseData, onBack }: CaseDetailPageProps) {
               </p>
             </div>
 
-            {/* Дизайны - 2 вертикальные высокие */}
+            {/* Дизайны - 2 вертикальные высокие (фото) */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8">
-              <div className="rounded-xl lg:rounded-2xl overflow-hidden border border-white/10">
-                <img src={caseData.images[3]} alt="Книжка с глазом" className="w-full h-auto object-contain" />
+              <div className="rounded-xl lg:rounded-2xl overflow-hidden border border-white/10 aspect-[3/4]">
+                <img src={caseData.images[5]} alt="Фото игры" className="w-full h-full object-cover" />
               </div>
-              <div className="rounded-xl lg:rounded-2xl overflow-hidden border border-white/10">
-                <img src={caseData.images[4]} alt="Детали" className="w-full h-auto object-contain" />
+              <div className="rounded-xl lg:rounded-2xl overflow-hidden border border-white/10 aspect-[3/4]">
+                <img src={caseData.images[6]} alt="Фото участников" className="w-full h-full object-cover" />
               </div>
             </div>
 
             {/* Награда - во всю ширину */}
-            <div className="rounded-xl lg:rounded-2xl overflow-hidden border border-white/10">
-              <img src={caseData.images[7]} alt="Награда" className="w-full h-auto object-contain" />
+            <div className="rounded-xl lg:rounded-2xl overflow-hidden border border-white/10 aspect-video">
+              <img src={caseData.images[7]} alt="Награда" className="w-full h-full object-cover" />
             </div>
 
             {/* Материалы игры - карусель */}
@@ -843,13 +991,12 @@ export function CaseDetailPage({ caseData, onBack }: CaseDetailPageProps) {
       {/* Images without spacing */}
       <section className="bg-white relative w-full">
         {caseData.images.map((image, index) => (
-          <div key={index} className="w-full">
-            <img
-              src={image}
-              alt={`${caseData.title} ${index + 1}`}
-              className="w-full h-auto block"
-            />
-          </div>
+          <img
+            key={index}
+            src={image}
+            alt={`${caseData.title} ${index + 1}`}
+            className="w-full h-auto block"
+          />
         ))}
       </section>
 
@@ -945,6 +1092,20 @@ export function getCaseDetailById(id: string): CaseDetail {
     };
   }
 
+  // Кейс Tectum
+  if (id === '8') {
+    return {
+      id: '8',
+      title: 'TECTUM',
+      category: 'Дизайн баннеров / Маркетинг',
+      description: 'Более 500 баннеров для криптовалютной компании Tectum SoftNote. Полный цикл креативной разработки для digital-кампании.',
+      tags: ['Digital Design', 'Marketing', 'Crypto'],
+      imageUrl: COVERS.tectum,
+      year: '2024',
+      images: [COVERS.tectum]
+    };
+  }
+
   // Кейс ПромАрт
   if (id === '9') {
     return {
@@ -956,6 +1117,34 @@ export function getCaseDetailById(id: string): CaseDetail {
       imageUrl: COVERS.promart,
       year: '2024',
       images: [COVERS.promart]
+    };
+  }
+
+  // Кейс Ветстатус
+  if (id === '10') {
+    return {
+      id: '10',
+      title: 'ВЕТСТАТУС',
+      category: 'Брендинг / Айдентика',
+      description: 'Визуальная айдентика для ветеринарной клиники. Проект основан на идее, что питомцы — это личности, и им тоже необходима медицинская помощь.',
+      tags: ['Branding', 'Identity', 'Visual System'],
+      imageUrl: COVERS.vetstatus,
+      year: '2024',
+      images: CASE_IMAGES.vetstatus
+    };
+  }
+
+  // Кейс Матрица Судьбы
+  if (id === '11') {
+    return {
+      id: '11',
+      title: 'МАТРИЦА СУДЬБЫ',
+      category: 'Веб-разработка / Дизайн',
+      description: 'Сайт для продажи курса по нумерологии и матрице судьбы. Создали landing page с мистической атмосферой и конверсионной структурой.',
+      tags: ['Web Design', 'Landing Page', 'E-learning'],
+      imageUrl: COVERS.matritsa,
+      year: '2024',
+      images: CASE_IMAGES.matritsa
     };
   }
 

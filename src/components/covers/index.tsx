@@ -22,3 +22,6 @@ export { NexteventCover } from './NexteventCover';
 export { TectumCover } from './TectumCover';
 export { Kombo499Cover } from './Kombo499Cover';
 export { PromartCover } from './PromartCover';
+export { VetstatusCover } from './VetstatusCover';
+export { MatritsaCover } from './MatritsaCover';
+export { AutoservisCover } from './AutoservisCover';

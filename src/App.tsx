@@ -12,7 +12,11 @@ import {
   OkogoraCover,
   CherekhinCover,
   TectumCover,
-  GoldmileCover
+  GoldmileCover,
+  VetstatusCover,
+  Kombo499Cover,
+  MatritsaCover,
+  AutoservisCover
 } from './components/covers';
 
 // Unified Typography System:
@@ -176,8 +180,8 @@ function Ideology() {
   return (
     <div className="bg-white relative shrink-0 w-full">
       <div className="flex flex-col justify-center size-full">
-        <div className="box-border content-stretch flex flex-col gap-4 items-center justify-center px-8 lg:px-16 py-24 lg:py-32 relative w-full">
-          <p className="font-['Inter',sans-serif] font-bold leading-none text-center text-[#0e0e0e] text-[clamp(2.5rem,5.5vw,4.5rem)] tracking-[-0.02em] max-w-5xl">
+        <div className="box-border content-stretch flex flex-col gap-4 items-start justify-start px-8 lg:px-16 py-16 lg:py-32 relative w-full">
+          <p className="font-['Inter',sans-serif] font-bold leading-none text-left text-[#0e0e0e] text-[clamp(2.5rem,5.5vw,4.5rem)] tracking-[-0.02em]">
             Мы объединяем <span className="font-['IBM_Plex_Serif',serif] italic">стратегию, дизайн и технологии</span>, чтобы создавать продукты, которые решают задачи бизнеса.
           </p>
         </div>
@@ -238,11 +242,11 @@ function Cases({ onViewAllClick, onCaseClick }: { onViewAllClick?: () => void; o
   const cases = [
     {
       id: "1",
-      slug: "vtorichkin",
-      title: "Вторичкин",
-      tags: "UX/UI design",
-      description: "Платформа для поиска вторичной недвижимости",
-      CoverComponent: VtorichkinCover,
+      slug: "okogora",
+      title: "Okogora",
+      tags: "Брендинг / UX/UI design",
+      description: "Эко-бренд натуральной косметики с сильной визуальной идентичностью",
+      CoverComponent: OkogoraCover,
       large: true
     },
     {
@@ -353,7 +357,7 @@ function SpecialCases({ onCaseClick }: { onCaseClick?: (caseId: string) => void 
             <div 
               className="content-stretch flex flex-col gap-4 items-start relative shrink-0 flex-1 group cursor-pointer"
               onClick={() => {
-                console.log('Черёхин парк clicked - ID: 6');
+                console.log('��ерёх����н парк clicked - ID: 6');
                 if (onCaseClick) {
                   onCaseClick('6');
                 }
@@ -416,7 +420,7 @@ function Transparency() {
   return (
     <div className="bg-white relative shrink-0 w-full">
       <div className="flex flex-col justify-center size-full">
-        <div className="box-border content-stretch flex flex-col gap-4 items-start justify-center px-8 lg:px-16 py-24 lg:py-32 relative w-full">
+        <div className="box-border content-stretch flex flex-col gap-4 items-start justify-center px-8 lg:px-16 py-16 lg:py-32 relative w-full">
           <div className="content-stretch flex flex-col lg:flex-row gap-4 lg:gap-4 items-start relative shrink-0 w-full max-w-6xl">
             <p className="font-['Inter',sans-serif] font-bold leading-none text-[#0e0e0e] text-[clamp(2.5rem,5.5vw,4.5rem)] tracking-[-0.02em]">
               Выстраиваем работу прозрачно — <span className="font-['IBM_Plex_Serif',serif] italic">открываем Figma, подключаемся к чатам</span>
@@ -492,18 +496,18 @@ function Footer() {
   return (
     <footer id="footer" className="bg-black relative shrink-0 w-full">
       <div className="size-full">
-        <div className="box-border content-stretch flex flex-col gap-8 lg:gap-12 items-start pb-12 pt-12 lg:pt-16 px-8 lg:px-16 relative w-full">
+        <div className="box-border content-stretch flex flex-col gap-8 lg:gap-12 items-start pb-8 pt-8 lg:pb-12 lg:pt-16 px-8 lg:px-16 relative w-full">
           <div className="content-stretch flex flex-col lg:flex-row gap-8 lg:gap-12 items-start relative shrink-0 w-full">
-            <div className="basis-0 content-stretch flex flex-col gap-4 grow items-start min-h-px min-w-px relative shrink-0">
+            <div className="w-full lg:w-auto lg:flex-1">
               <Group67 />
             </div>
-            <div className="basis-0 content-stretch flex flex-col lg:flex-row gap-8 lg:gap-12 grow items-start min-h-px min-w-px relative shrink-0">
-              <div className="basis-0 font-['Inter',sans-serif] grow min-h-px min-w-px text-[clamp(1.125rem,1.5vw,1.5rem)] text-neutral-100 space-y-2">
+            <div className="w-full lg:w-auto lg:flex-1 flex flex-col lg:flex-row gap-6 lg:gap-12">
+              <div className="w-full lg:w-auto font-['Inter',sans-serif] text-[clamp(1rem,1.25vw,1.25rem)] text-neutral-100 space-y-2">
                 <p className="cursor-pointer hover:text-[#cccccc] transition-colors" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>Наверх</p>
                 <p className="cursor-pointer hover:text-[#cccccc] transition-colors">Заполнить бриф</p>
                 <p className="underline cursor-pointer hover:text-[#cccccc] transition-colors">Связаться с нами</p>
               </div>
-              <div className="basis-0 font-['Inter',sans-serif] grow min-h-px min-w-px text-[clamp(1.125rem,1.5vw,1.5rem)] text-neutral-100 space-y-2">
+              <div className="w-full lg:w-auto font-['Inter',sans-serif] text-[clamp(1rem,1.25vw,1.25rem)] text-neutral-100 space-y-2">
                 <p className="cursor-pointer hover:text-[#cccccc] transition-colors">Instagram</p>
                 <p className="cursor-pointer hover:text-[#cccccc] transition-colors">Вконтакте</p>
                 <p className="cursor-pointer hover:text-[#cccccc] transition-colors">Telegram</p>
@@ -511,9 +515,9 @@ function Footer() {
             </div>
           </div>
           <div className="bg-[#3d3d3d] h-[1px] shrink-0 w-full" data-name="Линия" />
-          <div className="content-stretch flex flex-col lg:flex-row font-['Inter',sans-serif] gap-6 lg:gap-12 items-start text-[clamp(0.875rem,1vw,1.125rem)] text-neutral-100 w-full">
-            <p className="basis-0 grow min-h-px min-w-px relative shrink-0">© Комбинация 2025</p>
-            <p className="basis-0 grow min-h-px min-w-px relative shrink-0 cursor-pointer hover:text-[#cccccc] transition-colors">Политика конфиденциальности</p>
+          <div className="content-stretch flex flex-col lg:flex-row font-['Inter',sans-serif] gap-4 lg:gap-12 items-start text-[clamp(0.875rem,1vw,1.125rem)] text-neutral-100 w-full">
+            <p className="w-full lg:w-auto">© Комбинация 2025</p>
+            <p className="w-full lg:w-auto cursor-pointer hover:text-[#cccccc] transition-colors">Политика конфиденциальности</p>
           </div>
         </div>
       </div>

@@ -1,5 +1,13 @@
-import img from "figma:asset/b037e7eed6eef7992486bffefd90173d2266f227.png";
+import img from "figma:asset/b676e820ff9699e4ee3ee6af70caf64d7602b231.png";
 
 export function OkogoraCover({ className = "", alt = "Око Гора" }: { className?: string; alt?: string }) {
-  return <img src={img} alt={alt} className={className} />;
+  return (
+    <div className={`relative size-full ${className}`}>
+      <img 
+        alt={alt} 
+        className="absolute inset-0 max-w-none object-center object-cover pointer-events-none size-full" 
+        src={img} 
+      />
+    </div>
+  );
 }

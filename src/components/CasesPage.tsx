@@ -10,7 +10,10 @@ import {
   NexteventCover,
   TectumCover,
   Kombo499Cover,
-  PromartCover
+  PromartCover,
+  VetstatusCover,
+  MatritsaCover,
+  AutoservisCover
 } from './covers';
 
 function Group67() {
@@ -38,18 +41,18 @@ function Footer() {
   return (
     <div className="bg-black relative shrink-0 w-full">
       <div className="size-full">
-        <div className="box-border content-stretch flex flex-col gap-8 lg:gap-12 items-start pb-12 pt-12 lg:pt-16 px-8 lg:px-16 relative w-full">
+        <div className="box-border content-stretch flex flex-col gap-8 lg:gap-12 items-start pb-8 pt-8 lg:pb-12 lg:pt-16 px-8 lg:px-16 relative w-full">
           <div className="content-stretch flex flex-col lg:flex-row gap-8 lg:gap-12 items-start relative shrink-0 w-full">
-            <div className="basis-0 content-stretch flex flex-col gap-4 grow items-start min-h-px min-w-px relative shrink-0">
+            <div className="w-full lg:w-auto lg:flex-1">
               <Group67 />
             </div>
-            <div className="basis-0 content-stretch flex flex-col lg:flex-row gap-8 lg:gap-12 grow items-start min-h-px min-w-px relative shrink-0">
-              <div className="basis-0 font-['Inter',sans-serif] grow min-h-px min-w-px text-[clamp(1.125rem,1.5vw,1.5rem)] text-neutral-100 space-y-2">
+            <div className="w-full lg:w-auto lg:flex-1 flex flex-col lg:flex-row gap-6 lg:gap-12">
+              <div className="w-full lg:w-auto font-['Inter',sans-serif] text-[clamp(1rem,1.25vw,1.25rem)] text-neutral-100 space-y-2">
                 <p className="cursor-pointer hover:text-[#cccccc] transition-colors" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>Наверх</p>
                 <p className="cursor-pointer hover:text-[#cccccc] transition-colors">Заполнить бриф</p>
                 <p className="underline cursor-pointer hover:text-[#cccccc] transition-colors">Связаться с нами</p>
               </div>
-              <div className="basis-0 font-['Inter',sans-serif] grow min-h-px min-w-px text-[clamp(1.125rem,1.5vw,1.5rem)] text-neutral-100 space-y-2">
+              <div className="w-full lg:w-auto font-['Inter',sans-serif] text-[clamp(1rem,1.25vw,1.25rem)] text-neutral-100 space-y-2">
                 <p className="cursor-pointer hover:text-[#cccccc] transition-colors">Instagram</p>
                 <p className="cursor-pointer hover:text-[#cccccc] transition-colors">Вконтакте</p>
                 <p className="cursor-pointer hover:text-[#cccccc] transition-colors">Telegram</p>
@@ -57,9 +60,9 @@ function Footer() {
             </div>
           </div>
           <div className="bg-[#3d3d3d] h-[1px] shrink-0 w-full" data-name="Линия" />
-          <div className="content-stretch flex flex-col lg:flex-row font-['Inter',sans-serif] gap-6 lg:gap-12 items-start text-[clamp(0.875rem,1vw,1.125rem)] text-neutral-100 w-full">
-            <p className="basis-0 grow min-h-px min-w-px relative shrink-0">© Комбинация 2025</p>
-            <p className="basis-0 grow min-h-px min-w-px relative shrink-0 cursor-pointer hover:text-[#cccccc] transition-colors">Политика конфиденциальности</p>
+          <div className="content-stretch flex flex-col lg:flex-row font-['Inter',sans-serif] gap-4 lg:gap-12 items-start text-[clamp(0.875rem,1vw,1.125rem)] text-neutral-100 w-full">
+            <p className="w-full lg:w-auto">© Комбинация 2025</p>
+            <p className="w-full lg:w-auto cursor-pointer hover:text-[#cccccc] transition-colors">Политика конфиденциальности</p>
           </div>
         </div>
       </div>
@@ -80,13 +83,13 @@ interface CaseStudy {
 
 const caseStudies: CaseStudy[] = [
   {
-    id: '1',
-    slug: 'vtorichkin',
-    title: 'Вторичкин',
-    category: 'UX/UI design',
-    description: 'Платформа для поиска вторичной недвижимости в Москве',
-    CoverComponent: VtorichkinCover,
-    year: '2025'
+    id: '4',
+    slug: 'kombo499',
+    title: 'Комбо за 499',
+    category: 'Брендинг / Продвижение',
+    description: 'Айдентика и digital-кампания для музыкального мероприятия',
+    CoverComponent: Kombo499Cover,
+    year: '2024'
   },
   {
     id: '2',
@@ -107,13 +110,13 @@ const caseStudies: CaseStudy[] = [
     year: '2025'
   },
   {
-    id: '4',
-    slug: 'kombo499',
-    title: 'Комбо за 499',
-    category: 'Брендинг / Продвижение',
-    description: 'Айдентика и digital-кампания для музыкального мероприятия',
-    CoverComponent: Kombo499Cover,
-    year: '2024'
+    id: '1',
+    slug: 'vtorichkin',
+    title: 'Вторичкин',
+    category: 'UX/UI design',
+    description: 'Платформа для поиска вторичной недвижимости в Москве',
+    CoverComponent: VtorichkinCover,
+    year: '2025'
   },
   {
     id: '5',
@@ -150,8 +153,7 @@ const caseStudies: CaseStudy[] = [
     category: 'Дизайн баннеров / Маркетинг',
     description: 'Более 500 баннеров для криптовалютной компании',
     CoverComponent: TectumCover,
-    year: '2024',
-    externalLink: 'https://tectum.io/tectum-blog/'
+    year: '2024'
   },
   {
     id: '9',
@@ -162,6 +164,34 @@ const caseStudies: CaseStudy[] = [
     CoverComponent: PromartCover,
     year: '2024',
     externalLink: 'http://prom-art.pro/'
+  },
+  {
+    id: '10',
+    slug: 'vetstatus',
+    title: 'Ветстатус',
+    category: 'Брендинг / Айдентика',
+    description: 'Визуальная айдентика для ветеринарной клиники',
+    CoverComponent: VetstatusCover,
+    year: '2024'
+  },
+  {
+    id: '11',
+    slug: 'matritsa',
+    title: 'Матрица Судьбы',
+    category: 'Веб-разработка / Дизайн',
+    description: 'Сайт для продажи курса по нумерологии',
+    CoverComponent: MatritsaCover,
+    year: '2024'
+  },
+  {
+    id: '12',
+    slug: 'autoservis',
+    title: 'Автосервис',
+    category: 'Веб-разработка',
+    description: 'Приложение для ТО',
+    CoverComponent: AutoservisCover,
+    year: '2024',
+    externalLink: 'https://autodemo.figma.site'
   }
 ];
 
@@ -170,7 +200,7 @@ function CaseCard({ caseStudy, onClick }: { caseStudy: CaseStudy; onClick?: () =
     e.preventDefault();
     console.log('CaseCard clicked on CasesPage:', caseStudy.title);
     
-    // Если есть внешняя ссылка, открываем её
+    // Ес��и есть внешняя ссылка, открываем её
     if (caseStudy.externalLink) {
       window.open(caseStudy.externalLink, '_blank');
       return;
@@ -183,6 +213,8 @@ function CaseCard({ caseStudy, onClick }: { caseStudy: CaseStudy; onClick?: () =
   };
 
   const { CoverComponent } = caseStudy;
+  // Специальная обработка для Ветстатуса - увеличиваем масштаб на 10%
+  const isVetstatus = caseStudy.slug === 'vetstatus';
   
   return (
     <div 
@@ -194,7 +226,11 @@ function CaseCard({ caseStudy, onClick }: { caseStudy: CaseStudy; onClick?: () =
       <div className="h-[400px] lg:h-[500px] relative rounded-2xl lg:rounded-3xl shrink-0 w-full overflow-hidden bg-gray-100">
         <CoverComponent 
           alt={caseStudy.title} 
-          className="absolute inset-0 max-w-none object-center object-cover pointer-events-none rounded-2xl lg:rounded-3xl size-full group-hover:scale-105 transition-transform duration-500"
+          className={`absolute inset-0 max-w-none object-center object-cover pointer-events-none rounded-2xl lg:rounded-3xl size-full transition-transform duration-500 ${
+            isVetstatus 
+              ? 'scale-110 group-hover:scale-[1.15]' 
+              : 'group-hover:scale-105'
+          }`}
         />
         <div className="absolute inset-0 bg-black/0 group-hover:bg-black/5 transition-colors duration-300" />
       </div>
