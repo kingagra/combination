@@ -30,6 +30,10 @@ import kombo499Poster6 from 'figma:asset/6f1d073a18bbcf5096c8c9dabcf6eaa4959324e
 
 import nexteventBackstage from 'figma:asset/868898f80742456c5e7d1c2f98f4822ab108ba13.png';
 
+import vtorichkinDashboard from 'figma:asset/3f9554394c261f3848852f2a72b8433154f79f02.png';
+import vtorichkinFavorites from 'figma:asset/9a0a2d818ac6d1302b27ac13cb4920691719998c.png';
+import vtorichkinMobile from 'figma:asset/087378e9d0c28de5bbac1ec2aefa117163f900c6.png';
+
 export const COVERS = {
   vtorichkin: vtorichkinCover,
   getlogist: getlogistCover,
@@ -41,6 +45,13 @@ export const COVERS = {
   tectum: tectumCover,
   promart: promartCover,
 };
+
+const vtorichkinImages = [
+  vtorichkinCover,
+  vtorichkinDashboard,
+  vtorichkinFavorites,
+  vtorichkinMobile,
+];
 
 const goldmileImages = goldmileImagesExport;
 const okogoraImages = [
@@ -62,7 +73,7 @@ const kombo499Images = [
 const nexteventImages = [nexteventCover, nexteventBackstage];
 
 export const CASE_IMAGES = {
-  vtorichkin: [vtorichkinCover],
+  vtorichkin: vtorichkinImages,
   getlogist: [getlogistCover],
   goldmile: goldmileImages,
   kombo499: kombo499Images,
